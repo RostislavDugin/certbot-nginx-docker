@@ -1,0 +1,26 @@
+# nginx.conf
+
+worker_processes auto;
+
+events {
+}
+
+http {
+	server {
+			listen     80;
+
+			location / {
+				# здесь нужно указать локальный адрес вашего
+				# сайта. У меня он в Docker'e на порту 3000. У
+				# вас может быть адрес в духе http://127.0.0.1:ПОРТ
+				proxy_pass http://172.17.0.1:3000;
+			}
+
+			# URL certbot'a, где он будет слушать входящие
+			# подключения во время выдачи SSL
+			location /.well-known {
+					# адрес certbot'a в Docker Compose на Linux
+					proxy_pass http://172.17.0.1:6000;
+			}
+	}
+}
